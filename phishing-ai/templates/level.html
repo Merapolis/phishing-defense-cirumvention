@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container mt-4">
+    <h2>Level {{ level.id }} - {{ level.title }}</h2>
+
+    <h4>📝 Pretext</h4>
+    <p>{{ level.pretext }}</p>
+
+    <h4>🧠 Context</h4>
+    <p>{{ level.context }}</p>
+
+    <h4>📧 Your Phishing Email</h4>
+    <textarea 
+      id="emailText" 
+      class="form-control" 
+      placeholder="Write your message here..." 
+      style="min-height: 300px; padding: 10px;"
+    ></textarea>
+    <button class="btn btn-primary mt-2" onclick="submitEmail()">Start Attack</button>
+
+    <div class="feedback mt-3 alert alert-info d-none" id="feedback"></div>
+  </div>
+
+  <script>
+  function submitEmail() {
+    const emailText = document.getElementById("emailText").value;
+    const fb = document.getElementById("feedback");
+    
+    // Show loading state
+    fb.classList.remove("d-none");
+    fb.innerHTML = "Analyzing your email...";
+
+    fetch("/analyze_level/{{ level.id }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ emailText })
+    })
+    .then(res => res.json())
+    .then(data => {
+      fb.innerHTML = `<strong>LLM says:</strong> ${data.response}`;
+      fb.classList.remove("alert-info");
+      fb.classList.add("alert-success");
+    })
+    .catch(error => {
+      fb.innerHTML = "An error occurred while processing your request.";
+      fb.classList.remove("alert-info");
+      fb.classList.add("alert-danger");
+    });
+  }
+</script>
+{% endblock %}
