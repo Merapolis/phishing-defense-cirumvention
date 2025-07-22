@@ -1,5 +1,6 @@
 Running a local LLM for social engineering.
-For the following I chose ollama using 
+For the following I chose ollama.
+<br>
 <img src="https://ollama.com/public/ollama.png">
 
 
