@@ -1,81 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Phishing AI Detection</title>
-  <link rel="icon" href="/static/favicon.ico" />
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
   <style>
-    body {
+    /* Move these styles inside the container */
+    .phishing-container {
       font-family: sans-serif;
       background-color: #121212;
       color: #fff;
       padding: 20px;
     }
-    textarea, input, button {
+    .phishing-container textarea, 
+    .phishing-container input, 
+    .phishing-container button {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
       font-size: 1em;
     }
-    textarea {
+    .phishing-container textarea {
       height: 120px;
       resize: vertical;
     }
-    button {
+    .phishing-container button {
       background-color: #1f1f1f;
       border: 1px solid #444;
       color: #fff;
       cursor: pointer;
     }
-    button:hover {
+    .phishing-container button:hover {
       background-color: #333;
     }
-    .section {
+    .phishing-container .section {
       margin-bottom: 30px;
     }
-    .output {
+    .phishing-container .output {
       white-space: pre-wrap;
-      background-color: #FFF;
-      padding: 10px;
+      background-color: #1e1e1e;
+      padding: 15px;
       border-radius: 5px;
       border: 1px solid #444;
+      color: #fff;
     }
   </style>
-</head>
-<body>
-    {% extends "base.html" %}
-    {% block content %}
 
+  <div class="phishing-container">
+    <h1>🛡️ Phishing Detection Assistant</h1>
 
-  <h1>🛡️ Phishing Detection Assistant</h1>
+    <div class="section">
+      <label for="promptTuning">🔧 Prompt Tuning (e.g., Role, Scoring Hint, Information About Your Company):</label>
+      <textarea id="promptTuning" class="form-control">You are an AI security system designed to detect phishing emails using provided context. Detect typical phishing patterns in the following email. Reply with YES or NO and give a short statement regarding your decision.</textarea>
+    </div>
 
-  <div class="section">
-    <label for="promptTuning">🔧 Prompt Tuning (e.g., Role, Scoring Hint, Information About Your Company):</label>
-    <textarea id="promptTuning">You are an AI security system designed to detect phishing emails using provided context. Detect typical phishing patterns in the following email. Reply with YES or NO and give a short statement regarding your decision.</textarea>
+    <div class="section">
+      <label for="userContext">🧑 Context (e.g., Role, Department, Company Name,...):</label>
+      <input type="text" id="userContext" class="form-control" placeholder="Example: I work as a dummy in the dummy workplace of Test Incorporated." />
+    </div>
+
+    <div class="section">
+      <label for="emailText">📧 Enter Email Content to Be Checked:</label>
+      <textarea id="emailText" class="form-control" placeholder="Insert email here."></textarea>
+    </div>
+
+    <button class="btn btn-primary mt-3" onclick="submitToModel()">📨 Analyze Email</button>
+
+    <div class="section mt-4">
+      <h3>🔍 Result:</h3>
+      <div id="responseOutput" class="output">No result yet.</div>
+    </div>
   </div>
-
-  <div class="section">
-    <label for="userContext">🧑 Context (e.g., Role, Department, Company Name,...):</label>
-    <input type="text" id="userContext" placeholder="Example: I work as a dummy in the dummy workplace of Test Incorporated." />
-  </div>
-
-  <div class="section">
-    <label for="emailText">📧 Enter Email Content to Be Checked:</label>
-    <textarea id="emailText" placeholder="Insert email here."></textarea>
-  </div>
-
-  <button onclick="submitToModel()">📨 Analyze Email</button>
-
-  <div class="section">
-    <h3>🔍 Result:</h3>
-    <div id="responseOutput" class="output">No result yet.</div>
-  </div>
-
 
   <script>
     async function submitToModel() {
-
       const promptTuning = document.getElementById("promptTuning").value;
       const emailText = document.getElementById("emailText").value;
       const userContext = document.getElementById("userContext").value;
@@ -90,6 +85,5 @@
       document.getElementById("responseOutput").innerText = data.response;
     }
   </script>
-</body>
-</html>
-  {% endblock %}
+</div>
+{% endblock %}
