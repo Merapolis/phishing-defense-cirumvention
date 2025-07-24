@@ -50,7 +50,7 @@ Created symlink /etc/systemd/system/default.target.wants/ollama.service → /etc
 # Pulling/Running Mistral
 In order to make this most accessible and given the use-case, the phi model was chosen. 
 ```
-ollama run phi
+ollama run mistral
 ```
 This downloads a model size of 4.4 GB, which is okay in size.
 
