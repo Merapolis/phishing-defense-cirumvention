@@ -48,9 +48,9 @@ Created symlink /etc/systemd/system/default.target.wants/ollama.service → /etc
 >>> Install complete. Run "ollama" from the command line.
 ```
 # Pulling/Running Mistral
-In order to make this most accessible and given the use-case, the mistral model was chosen. 
+In order to make this most accessible and given the use-case, the phi model was chosen. 
 ```
-ollama run mistral
+ollama run phi
 ```
 This downloads a model size of 4.4 GB, which is okay in size.
 
