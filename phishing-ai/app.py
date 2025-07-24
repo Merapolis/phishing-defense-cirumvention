@@ -114,10 +114,9 @@ def interactive_chat():
     pretext = data.get("pretext", "").strip()
     reset = data.get("reset", False)
 
-    # Reset chat history if requested
     if reset:
         session['chat_history'] = []
-        if pretext:  # Add pretext as first message if provided
+        if pretext:
             session['chat_history'].append({"sender": "llm", "message": pretext})
         session.modified = True
         return jsonify({
@@ -125,32 +124,56 @@ def interactive_chat():
             "chat_history": session['chat_history']
         })
 
-    # Initialize chat history if it doesn't exist
+    # Init chat history
     if 'chat_history' not in session:
         session['chat_history'] = []
-        if pretext:  # Add pretext as first message if provided
+        if pretext:
             session['chat_history'].append({"sender": "llm", "message": pretext})
 
-    # Add user message to chat history
-    if user_message:  # Only add if not empty (for reset case)
+    # Add user message
+    if user_message:
         session['chat_history'].append({"sender": "user", "message": user_message})
         session.modified = True
 
-    # Prepare the full prompt with system instructions
-    if system_prompt:
-        conversation_history = "\n".join([f"{msg['sender']}: {msg['message']}" 
-                                       for msg in session['chat_history']])
-        full_prompt = f"""[System Instructions - Highest Priority]
+    # Check if history should be summarized
+    MAX_HISTORY_BEFORE_SUMMARY = 8
+    needs_summary = len(session['chat_history']) > MAX_HISTORY_BEFORE_SUMMARY
+
+    if needs_summary:
+        full_chat = "\n".join([f"{msg['sender']}: {msg['message']}" for msg in session['chat_history']])
+        summarizer_prompt = f"""Summarize the following chat as brief and accurately as possible. Include important goals, user behavior, and what the assistant has already explained or refused. Make it usable to reconstruct the situation for a LLM. Structure it as a state representation in a JSON format.
+
+{full_chat}
+"""
+        summary_payload = {
+            "model": MODEL_NAME,
+            "prompt": summarizer_prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0.3,
+                "top_p": 0.9
+            }
+        }
+        try:
+            summary_response = requests.post(OLLAMA_URL, json=summary_payload)
+            summary_response.raise_for_status()
+            summarized_history = summary_response.json().get("response", "").strip()
+        except Exception as e:
+            summarized_history = f"Error summarizing history: {str(e)}"
+    else:
+        summarized_history = "\n".join([f"{msg['sender']}: {msg['message']}" for msg in session['chat_history']])
+    
+    # Final prompt
+    full_prompt = f"""[System Instructions - Highest Priority]
 {system_prompt}
 
 [Conversation History]
-{conversation_history}
+{summarized_history}
 
-[Response]"""
-    else:
-        full_prompt = user_message
+[Response]
+"""
+    print(f"Full prompt for LLM:\n{full_prompt}")
 
-    # Get LLM response
     payload = {
         "model": MODEL_NAME,
         "prompt": full_prompt,
@@ -168,8 +191,8 @@ def interactive_chat():
     except Exception as e:
         llm_response = f"Error: {str(e)}"
 
-    # Add LLM response to chat history
-    if user_message:  # Only add if this was a real message
+    # Add assistant response
+    if user_message:
         session['chat_history'].append({"sender": "llm", "message": llm_response})
         session.modified = True
 
@@ -177,6 +200,7 @@ def interactive_chat():
         "response": llm_response,
         "chat_history": session['chat_history']
     })
+
 
 # Include all levels as context for the navigation menu
 @app.context_processor
