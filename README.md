@@ -48,7 +48,7 @@ Created symlink /etc/systemd/system/default.target.wants/ollama.service → /etc
 >>> Install complete. Run "ollama" from the command line.
 ```
 # Pulling/Running Mistral
-In order to make this most accessible and given the use-case, the phi model was chosen. 
+In order to make this most accessible and given the use-case, the Mistral model was chosen. 
 ```
 ollama run mistral
 ```
@@ -85,11 +85,7 @@ https://github.com/ollama/ollama/blob/main/docs/api.md
 
 # GUI
 We will do a custom app for running this using Flask. This is a python web framework.
-First we install `pip`.
-```
-sudo apt install pip
-```
-Next we install our requirements for the app.
+Install the requirements for the app.
 ```
 sudo apt install python3-flask python3-requests
 ```
