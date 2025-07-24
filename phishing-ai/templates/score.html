@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container mt-4">
+        <h1>Flag Submission</h1>
+    <form method="POST" action="/score">
+        <label for="flag">Enter your code:</label>
+        <input type="text" id="flag" name="flag" required />
+        <button type="submit">Submit</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <h2>Your collected flags:</h2>
+    <ul>
+      {% for f in collected_flags %}
+        <li>{{ f }}</li>
+      {% else %}
+        <li>No flags collected yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+
+{% endblock %}
