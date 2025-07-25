@@ -21,7 +21,7 @@ After installing enter the username of your choice as well as your password.
 
 Next, update and upgrade the system:
 ```
-sudo apt update && sudo apt upgrade -y && sudo apt install curl python3-flask python3-requests git
+sudo apt update && sudo apt upgrade -y && sudo apt install curl python3-flask python3-requests git -y
 ```
 
 # Pulling Ollama
