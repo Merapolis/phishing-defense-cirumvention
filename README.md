@@ -21,18 +21,15 @@ After installing enter the username of your choice as well as your password.
 
 Next, update and upgrade the system:
 ```
-sudo apt update && sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y && sudo apt install curl python3-flask python3-requests git
 ```
 
-In case curl is not installed for the following step.
-```
-sudo apt install curl
-```
 # Pulling Ollama
 Downloading ollama.
 ```
 curl -fsSL https://ollama.com/install.sh | sh
-
+```
+```
 >>> Installing ollama to /usr/local
 >>> Downloading Linux amd64 bundle
 ######################################################################## 100.0%
@@ -85,7 +82,7 @@ https://github.com/ollama/ollama/blob/main/docs/api.md
 
 # GUI
 We will do a custom app for running this using Flask. This is a python web framework.
-Install the requirements for the app.
+Install the requirements for the app. Which we already installed in a prior step.
 ```
 sudo apt install python3-flask python3-requests
 ```
