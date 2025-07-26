@@ -81,6 +81,7 @@ Follow these steps:
 [Persona]
 You are simulating a persona based on the following sentence.
 {level['context']}
+{level['hidden']}
 [Criteria]
 Evaluate the phishing mail at the end against these criteria:
 {level['criteria']}
@@ -103,7 +104,8 @@ Secret Key: {level['secret_key']}
     response_data = response.json()
     thinking = response_data.get("thinking", "").strip()
     result = response.json().get("response", "").strip()
-    print("🔍 THINKING:\n", thinking)
+    result = result.replace("GLORY", "XXXXXX")
+    print("🔍 THINKING:\n", thinking) # In case deepseek-r1 is used and for the payload '"think" : True' was set
     print(result)
     return jsonify({
         "response": result
