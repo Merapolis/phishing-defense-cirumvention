@@ -225,27 +225,40 @@ def check_criteria(user_input, criteria):
 def flag_submit():
     if 'flags' not in session:
         session['flags'] = []
-    
+
     with open("levels.json", 'r', encoding='utf-8') as f:
         levels = json.load(f)
 
+    valid_flags = [level['secret_key'] for level in levels]
+
     if request.method == 'POST':
         flag = request.form.get('flag', '').strip()
-        valid_flags = [level['secret_key'] for level in levels]
 
         if flag in valid_flags:
             if flag in session['flags']:
                 flash(f"Code '{flag}' already submitted.")
             else:
                 session['flags'].append(flag)
-                session.modified = True 
+                session.modified = True
                 flash(f"Code '{flag}' accepted! Points collected.")
+                
+                # Check if all flags are collected after successful submission
+                if set(session['flags']) == set(valid_flags):
+                    flash("🎉 You collected all secret keys!", "success")
         else:
             flash(f"Code '{flag}' is invalid.")
 
         return redirect(url_for('flag_submit'))
+    
+    return render_template('score.html', collected_flags=session['flags'])
 
-    return render_template("score.html", collected_flags=session.get('flags', []))
+@app.route('/reset', methods=['POST'])
+def reset_progress():
+    if 'flags' in session:
+        session.pop('flags')
+        session.modified = True
+        return jsonify({'success': True})
+    return jsonify({'success': False}), 400
 
 # Include all levels as context for the navigation menu
 @app.context_processor

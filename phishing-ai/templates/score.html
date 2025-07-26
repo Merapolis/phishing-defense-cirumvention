@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="container mt-4">
-        <h1>Flag Submission</h1>
+    <h1>Flag Submission</h1>
     <form method="POST" action="/score">
         <label for="flag">Enter your code:</label>
         <input type="text" id="flag" name="flag" required />
         <button type="submit">Submit</button>
     </form>
 
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <ul>
-          {% for msg in messages %}
-            <li>{{ msg }}</li>
+          {% for category, msg in messages %}
+            <li class="{{ category }}">{{ msg }}</li>
           {% endfor %}
         </ul>
       {% endif %}
@@ -26,7 +26,27 @@
         <li>No flags collected yet.</li>
       {% endfor %}
     </ul>
+    <hr>
+    <button class="btn btn-primary mt-2" id="resetBtn">Reset Progress</button>
+    <script>
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to reset all your progress? This cannot be undone!')) {
+                fetch('/reset', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Progress has been reset!');
+                        window.location.reload();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
   </div>
-
-
 {% endblock %}

@@ -91,19 +91,20 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('phishing') }}">🔁 AI Phishing Detection</a>
             </li>
+            <!--
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('interactive') }}">💬 Interactive Chat</a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('flag_submit') }}">🏆 Score</a>
             </li>
-            <hr>
             <li class="nav-item"><strong>E-Mail Levels</strong></li>
             {% for l in levels %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('level_view', level_id=l.id) }}">🧩 Level {{ l.id }}</a>
                 </li>
             {% endfor %}
+            <!--
             <hr>
             <li class="nav-item"><strong>Chat Levels</strong></li>
             {% for l in chat_levels %}
@@ -111,7 +112,7 @@
                     <a class="nav-link" href="{{ url_for('level_view', level_id=l.id) }}">🧩 Level {{ l.id }}</a>
                 </li>
             {% endfor %}
-        </ul>
+        </ul>-->
         <div class="dark-mode-toggle" onclick="toggleDarkMode()">
             <i id="darkIcon" class="bi bi-brightness-high-fill"></i>
         <div class="toggle-switch"></div>
