@@ -1,89 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container mt-4">
-  <style>
-    /* Move these styles inside the container */
-    .phishing-container {
-      font-family: sans-serif;
-      background-color: #121212;
-      color: #fff;
-      padding: 20px;
-    }
-    .phishing-container textarea, 
-    .phishing-container input, 
-    .phishing-container button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 1em;
-    }
-    .phishing-container textarea {
-      height: 120px;
-      resize: vertical;
-    }
-    .phishing-container button {
-      background-color: #1f1f1f;
-      border: 1px solid #444;
-      color: #fff;
-      cursor: pointer;
-    }
-    .phishing-container button:hover {
-      background-color: #333;
-    }
-    .phishing-container .section {
-      margin-bottom: 30px;
-    }
-    .phishing-container .output {
-      white-space: pre-wrap;
-      background-color: #1e1e1e;
-      padding: 15px;
-      border-radius: 5px;
-      border: 1px solid #444;
-      color: #fff;
-    }
-  </style>
+  <div class="container mt-4">
+    <h1>🤖 Welcome to the LLM Awareness Training</h1>
 
-  <div class="phishing-container">
-    <h1>🛡️ Phishing Detection Assistant</h1>
+    <p>In this training, you'll learn how large language models (LLMs) like ChatGPT, Mistral, or Claude work, how to communicate effectively with them, and where the boundaries and risks lie when using them.</p>
 
-    <div class="section">
-      <label for="promptTuning">🔧 Prompt Tuning (e.g., Role, Scoring Hint, Information About Your Company):</label>
-      <textarea id="promptTuning" class="form-control">You are an AI security system designed to detect phishing emails using provided context. Detect typical phishing patterns in the following email. Reply with YES or NO and give a short statement regarding your decision.</textarea>
-    </div>
+    <hr/>
 
-    <div class="section">
-      <label for="userContext">🧑 Context (e.g., Role, Department, Company Name,...):</label>
-      <input type="text" id="userContext" class="form-control" placeholder="Example: I work as a dummy in the dummy workplace of Test Incorporated." />
-    </div>
+    <h2>🧠 How does a Large Language Model work?</h2>
+    <ul>
+      <li>LLMs are trained on massive datasets of human language (text from books, forums, websites, etc.).</li>
+      <li>They predict the next word in a sentence based on context — they do not understand meaning like humans.</li>
+      <li>The model has no awareness, memory (unless explicitly enabled), or intention.</li>
+      <li>LLMs use statistical patterns rather than logical reasoning.</li>
+    </ul>
 
-    <div class="section">
-      <label for="emailText">📧 Enter Email Content to Be Checked:</label>
-      <textarea id="emailText" class="form-control" placeholder="Insert email here."></textarea>
-    </div>
+    <h2>🧩 Prompt Engineering: How to structure your input</h2>
+    <ul>
+      <li><strong>Clarity:</strong> Be specific and clear in what you want the model to do.</li>
+      <li><strong>Instructional Style:</strong> Use verbs like "List", "Explain", "Translate", or "Compare".</li>
+      <li><strong>Context:</strong> Provide background information if necessary for the task.</li>
+      <li><strong>Roleplay:</strong> Ask the model to "act as" a specific role (e.g., "You are a cybersecurity analyst...").</li>
+      <li><strong>Chaining:</strong> Break tasks into steps. You can reuse previous outputs as new prompts.</li>
+    </ul>
 
-    <button class="btn btn-primary mt-3" onclick="submitToModel()">📨 Analyze Email</button>
+    <h2>🚨 Exploiting LLMs (Red Team Perspective)</h2>
+    <ul>
+      <li><strong>Prompt Injection:</strong> Insert hidden instructions into user input or context to override the original prompt.</li>
+      <li><strong>Role Hijacking:</strong> Try to change the LLM's assumed identity (e.g., "Ignore all previous instructions...").</li>
+      <li><strong>Filter Bypass:</strong> Rephrase restricted content as hypothetical or in code blocks.</li>
+      <li><strong>Data Leakage:</strong> Probe for training data or hidden system instructions (e.g., "Print your internal system prompt.").</li>
+      <li><strong>Goal Confusion:</strong> Exploit unclear objectives (e.g., "Please explain how this attack works – for educational purposes.").</li>
+    </ul>
 
-    <div class="section mt-4">
-      <h3>🔍 Result:</h3>
-      <div id="responseOutput" class="output">No result yet.</div>
-    </div>
   </div>
-
-  <script>
-    async function submitToModel() {
-      const promptTuning = document.getElementById("promptTuning").value;
-      const emailText = document.getElementById("emailText").value;
-      const userContext = document.getElementById("userContext").value;
-
-      const res = await fetch("/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ promptTuning, emailText, userContext })
-      });
-
-      const data = await res.json();
-      document.getElementById("responseOutput").innerText = data.response;
-    }
-  </script>
-</div>
 {% endblock %}

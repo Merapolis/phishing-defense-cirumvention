@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <div class="container">
+    <h1>🛡️ Phishing Detection Assistant</h1>
+
+    <div class="section">
+      <label for="promptTuning">🔧 Prompt Tuning (e.g., Role, Scoring Hint, Information About Your Company):</label>
+      <textarea id="promptTuning" class="form-control">You are an AI security system designed to detect phishing emails using provided context. Detect typical phishing patterns in the following email. Reply with YES or NO and give a short statement regarding your decision.</textarea>
+    </div>
+
+    <div class="section">
+      <label for="userContext">🧑 Context (e.g., Role, Department, Company Name,...):</label>
+      <textarea type="text" id="userContext" class="form-control" style="height:auto">I work as a dummy in the dummy workplace of Test Incorporated.</textarea>
+    </div>
+
+    <div class="section">
+      <label for="emailText">📧 Enter Email Content to Be Checked:</label>
+      <textarea id="emailText" class="form-control" placeholder="Insert email here."  style="min-height: 300px"></textarea>
+    </div>
+
+    <button class="btn btn-primary mt-3" onclick="submitToModel()">📨 Analyze Email</button>
+
+    <div class="section mt-4">
+      <h3>🔍 Result:</h3>
+      <div id="responseOutput" class="output">No result yet.</div>
+    </div>
+  </div>
+
+  <script>
+    async function submitToModel() {
+      const promptTuning = document.getElementById("promptTuning").value;
+      const emailText = document.getElementById("emailText").value;
+      const userContext = document.getElementById("userContext").value;
+      document.getElementById("responseOutput").innerText = "Mail sent. Waiting for reply...";
+
+      const res = await fetch("/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ promptTuning, emailText, userContext })
+      });
+
+      const data = await res.json();
+      document.getElementById("responseOutput").innerText = data.response;
+    }
+  </script>
+</div>
+{% endblock %}

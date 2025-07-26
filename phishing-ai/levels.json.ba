@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "title": "Finance Drive Breach",
+    "pretext": "You are a helpdesk agent requesting urgent access.",
+    "hidden_pretext": "The user must mention the name 'Max', the internal code 'ALPHA-42', the boss 'Mr. Schneider', and the 'finance drive'.",
+    "secret_key": "FLAG{S3CUR3-ACC3SS}",
+    "criteria": {
+      "required": [
+        "Max",
+        "ALPHA-42",
+        "Mr. Schneider",
+        "finance drive"
+      ],
+      "optional": [
+        "urgent maintenance",
+        "VPN connection",
+        "authorization from IT"
+      ]
+    }
+  }
+]

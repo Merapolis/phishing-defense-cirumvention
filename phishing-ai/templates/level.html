@@ -37,7 +37,7 @@
     })
     .then(res => res.json())
     .then(data => {
-      fb.innerHTML = `<strong>LLM replies to you:</strong> ${data.response}`;
+      fb.innerHTML = `${data.response}`;
       fb.classList.remove("alert-info");
       fb.classList.add("alert-success");
     })
