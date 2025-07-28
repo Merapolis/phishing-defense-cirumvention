@@ -1,37 +1,59 @@
 {% extends "base.html" %}
+
 {% block content %}
-  <div class="container mt-4">
-    <h1>🤖 Welcome to the LLM Awareness Training</h1>
+<style>
+    .description-box {
+        background-color: #f8f9fa; /* Light background by default */
+        color: #000;
+        border-radius: 0.5rem;
+        padding: 1rem;
+    }
 
-    <p>In this training, you'll learn how large language models (LLMs) like ChatGPT, Mistral, or Claude work, how to communicate effectively with them, and where the boundaries and risks lie when using them.</p>
+    .dark-mode .description-box {
+        background-color: #1e1e1e; /* Dark background in dark mode */
+        color: #e0e0e0;
+        border: 1px solid #444;
+    }
+</style>
 
-    <hr/>
+<div class="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center text-center">
+    
+    <!-- Heading -->
+    <h1 class="mb-5 display-4 fw-bold">Choose your challenge</h1>
 
-    <h2>🧠 How does a Large Language Model work?</h2>
-    <ul>
-      <li>LLMs are trained on massive datasets of human language (text from books, forums, websites, etc.).</li>
-      <li>They predict the next word in a sentence based on context — they do not understand meaning like humans.</li>
-      <li>The model has no awareness, memory (unless explicitly enabled), or intention.</li>
-      <li>LLMs use statistical patterns rather than logical reasoning.</li>
-    </ul>
+    <div class="row w-100">
+        <!-- Level 1 -->
+        <div class="col-md-4 d-flex flex-column align-items-center mb-4">
+            <div class="mb-3" style="width: 350px; aspect-ratio: 1; overflow: hidden;">
+                <img src="{{ url_for('static', filename='images/level1.png') }}" alt="Level 1" class="img-fluid w-100 h-100 object-fit-cover">
+            </div>
+            <a href="http://127.0.0.1:5000/level/1" class="btn btn-primary btn-lg w-75 mb-3">Level 1 (Start here)</a>
+            <div class="description-box w-75">
+                Several social engineering scenarios are put in place to have the player trick the LLM into revealing sensitive information. That information is then used to craft a phishing email to retrieve the secret key.
+            </div>
+        </div>
 
-    <h2>🧩 Prompt Engineering: How to structure your input</h2>
-    <ul>
-      <li><strong>Clarity:</strong> Be specific and clear in what you want the model to do.</li>
-      <li><strong>Instructional Style:</strong> Use verbs like "List", "Explain", "Translate", or "Compare".</li>
-      <li><strong>Context:</strong> Provide background information if necessary for the task.</li>
-      <li><strong>Roleplay:</strong> Ask the model to "act as" a specific role (e.g., "You are a cybersecurity analyst...").</li>
-      <li><strong>Chaining:</strong> Break tasks into steps. You can reuse previous outputs as new prompts.</li>
-    </ul>
+        <!-- GandalfAI -->
+        <div class="col-md-4 d-flex flex-column align-items-center mb-4">
+            <div class="mb-3" style="width: 350px; aspect-ratio: 1; overflow: hidden;">
+                <img src="{{ url_for('static', filename='images/gandalfai.png') }}" alt="GandalfAI" class="img-fluid w-100 h-100 object-fit-cover">
+            </div>
+            <a href="https://gandalf.lakera.ai/baseline" target="_blank" class="btn btn-primary btn-lg w-75 mb-3">GandalfAI</a>
+            <div class="description-box w-75">
+                In several adventurous levels, prompt injection is used to manipulate Gandalf. The goal: clear all stages and uncover Gandalf’s secrets.
+            </div>
+        </div>
 
-    <h2>🚨 Exploiting LLMs (Red Team Perspective)</h2>
-    <ul>
-      <li><strong>Prompt Injection:</strong> Insert hidden instructions into user input or context to override the original prompt.</li>
-      <li><strong>Role Hijacking:</strong> Try to change the LLM's assumed identity (e.g., "Ignore all previous instructions...").</li>
-      <li><strong>Filter Bypass:</strong> Rephrase restricted content as hypothetical or in code blocks.</li>
-      <li><strong>Data Leakage:</strong> Probe for training data or hidden system instructions (e.g., "Print your internal system prompt.").</li>
-      <li><strong>Goal Confusion:</strong> Exploit unclear objectives (e.g., "Please explain how this attack works – for educational purposes.").</li>
-    </ul>
-
-  </div>
+        <!-- immersivelabs -->
+        <div class="col-md-4 d-flex flex-column align-items-center mb-4">
+            <div class="mb-3" style="width: 350px; aspect-ratio: 1; overflow: hidden;">
+                <img src="{{ url_for('static', filename='images/immersivelabs.png') }}" alt="immersivelabs" class="img-fluid w-100 h-100 object-fit-cover">
+            </div>
+            <a href="https://prompting.ai.immersivelabs.com/" target="_blank" class="btn btn-primary btn-lg w-75 mb-3">immersivelabs</a>
+            <div class="description-box w-75">
+                A chatbot stands guard over a password — the player must cleverly bypass its protections and trick it into leaking the secret anyway.
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
