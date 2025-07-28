@@ -88,7 +88,7 @@ sudo apt install python3-flask python3-requests
 ```
 For a prettier usage I would recommend conda, but this will do for now.
 
-Next retrieve the directory phishing-defense-ai, move inside the directory and open a terminal for the current folder. Next enter in the retrieved directory:
+Next retrieve the directory phishing-ai, move inside the directory and open a terminal for the current folder. Next enter in the retrieved directory:
 ```
 python3 app.py
 ```
