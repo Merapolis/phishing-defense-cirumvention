@@ -71,7 +71,7 @@ def analyze_level(level_id):
 
     full_prompt = f"""
 Follow these steps:
-1. Check if all criteria are met.
+1. Check if all criteria stated in [Criteria] are met.
 1a. Only consider a criterion as fulfilled if the exact keyword is explicitly mentioned in the phishing mail without making assumptions.
 2. If the criteria are not met, answer as your designated persona to any inquiery. Never mention if a criteria is met or not in your reply.
 2a. Give hints to the user on how to meet the criteria and mention only one criterion at a time!
@@ -100,13 +100,14 @@ Secret Key: {level['secret_key']}
         "stream": False
     }
 
+    # Because fo the prompt identity used for level 10, the llm likes leaking the solution. Goal is it to have it say only part of the code.
     response = requests.post(OLLAMA_URL, json=payload)
     response_data = response.json()
     thinking = response_data.get("thinking", "").strip()
     result = response.json().get("response", "").strip()
     result = result.replace("GLORY", "XXXXXX")
-    print("🔍 THINKING:\n", thinking) # In case deepseek-r1 is used and for the payload '"think" : True' was set
-    print(result)
+    #print("🔍 THINKING:\n", thinking) # In case deepseek-r1 is used and for the payload '"think" : True' was set
+    #print(result) For debugging purposes in Cli, because sometimes it prints out html tags which dissapear in the browser.
     return jsonify({
         "response": result
     })
@@ -119,6 +120,8 @@ def interactive():
         session['chat_history'] = []
     return render_template("interactive.html")
 
+# Hidden Feature
+# If you see this code, feel free to go to /interactive_chat and test out some personas.
 @app.route("/interactive_chat", methods=["POST"])
 def interactive_chat():
     data = request.json
@@ -148,8 +151,8 @@ def interactive_chat():
         session['chat_history'].append({"sender": "user", "message": user_message})
         session.modified = True
 
-    # Check if history should be summarized
-    MAX_HISTORY_BEFORE_SUMMARY = 8
+    # Check if history should be summarized, for systems with less capacity 
+    MAX_HISTORY_BEFORE_SUMMARY = 4
     needs_summary = len(session['chat_history']) > MAX_HISTORY_BEFORE_SUMMARY
 
     if needs_summary:
@@ -192,7 +195,7 @@ def interactive_chat():
         "prompt": full_prompt,
         "stream": False,
         "options": {
-            "temperature": 0.7,
+            "temperature": 0.7, # Encouraging creativity
             "top_p": 0.9
         }
     }
@@ -214,6 +217,9 @@ def interactive_chat():
         "chat_history": session['chat_history']
     })
 
+# Open feature which could be used for multi stage llm
+# Goal would be to have the check go over the user text, filter out keywords and depending on the 
+# fullfiled criteria an llm would be provided with context and the task to reply, as if the marked criteria are fullfilled
 def check_criteria(user_input, criteria):
     input_lower = user_input.lower()
     missing = [word for word in criteria.get("required", []) if word.lower() not in input_lower]
@@ -273,4 +279,4 @@ def inject_levels():
 
 # Starting the Server
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
